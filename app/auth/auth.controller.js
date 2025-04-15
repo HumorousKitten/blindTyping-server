@@ -8,10 +8,10 @@ import { generateToken } from './generate-token.js'
 //@access Public
 
 export const authUser = asyncHandler(async (req, res) => {
-	const {login, email, password} = req.body
+	const {email, password} = req.body
 
 	const user = await prisma.users.findUnique({
-		where: {login, email}
+		where: {email}
 	})
 
 	const isValidPassword = await verify(user.password, password)
