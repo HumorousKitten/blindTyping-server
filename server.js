@@ -8,7 +8,10 @@ import authRoutes from './app/auth/auth.routes.js'
 import userRoutes from './app/getUser/getUser.routes.js'
 import levelRoutes from './app/getLevel/getLevel.routes.js'
 import userLevelRoutes from './app/getUserLevels/getUserLevel.routes.js'
+import userBestResultRoutes from './app/bestResult/userBestResult.routes.js'
+import updateResultRoutes from './app/updateResult/updateResult.routes.js'
 import { errorHandler, notFound } from './app/middleware/error.middleware.js'
+	
 dotenv.config()
 const app = express()
 
@@ -28,6 +31,8 @@ const main = async () => {
 	app.use('/user', userRoutes)
 	app.use('/levels', levelRoutes)
 	app.use('/userLevels', userLevelRoutes)
+	app.use('/userBestResult', userBestResultRoutes)
+	app.use('/', updateResultRoutes)
 	app.use(notFound)
 	app.use(errorHandler)
 

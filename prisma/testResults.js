@@ -1,12 +1,12 @@
 import { prisma } from '../app/prisma.js'
 
 const results = [
-	{ user_id: 2, level: 1, sublevel: 1, cpm: 100, wpm: 100, accuracy: 91 },
-	{ user_id: 2, level: 0, sublevel: 1, cpm: 100, wpm: 100, accuracy: 92 },
-	{ user_id: 2, level: 2, sublevel: 1, cpm: 100, wpm: 100, accuracy: 93 },
-	{ user_id: 2, level: 2, sublevel: 2, cpm: 100, wpm: 100, accuracy: 94 },
-	{ user_id: 2, level: 1, sublevel: 3, cpm: 100, wpm: 100, accuracy: 90 },
-	{ user_id: 2, level: 1, sublevel: 2, cpm: 100, wpm: 100, accuracy: 100 },
+	{ user_id: 2, level: 1, sublevel: 1, cpm: 50, wpm: 35, accuracy: 91 },
+	{ user_id: 2, level: 0, sublevel: 1, cpm: 60, wpm: 10, accuracy: 92 },
+	{ user_id: 2, level: 2, sublevel: 1, cpm: 20, wpm: 30, accuracy: 93 },
+	{ user_id: 2, level: 2, sublevel: 2, cpm: 10, wpm: 10, accuracy: 94 },
+	{ user_id: 2, level: 1, sublevel: 3, cpm: 30, wpm: 55, accuracy: 100 },
+	{ user_id: 2, level: 1, sublevel: 2, cpm: 2, wpm: 3, accuracy: 100 },
 ]
 
 async function main() {
