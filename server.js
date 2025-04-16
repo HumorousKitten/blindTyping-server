@@ -6,9 +6,11 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import authRoutes from './app/auth/auth.routes.js'
 import userRoutes from './app/getUser/getUser.routes.js'
+import levelRoutes from './app/getLevel/getLevel.routes.js'
 import { errorHandler, notFound } from './app/middleware/error.middleware.js'
 dotenv.config()
 const app = express()
+
 
 const main = async () => {
 	if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
@@ -23,7 +25,7 @@ const main = async () => {
 
 	app.use('/auth', authRoutes)
 	app.use('/user', userRoutes)
-
+	app.use('/levels', levelRoutes)
 	app.use(notFound)
 	app.use(errorHandler)
 

@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken'
 import { prisma } from '../prisma.js'
 import asyncHandler from 'express-async-handler'
 
