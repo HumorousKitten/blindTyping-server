@@ -16,27 +16,26 @@ model levels {
 }
 
 model results {
-  id       Int       @id @default(autoincrement())
-  user_id  Int?
-  level    Int?
-  sublevel Int?
+  id        Int      @id @default(autoincrement())
+  user_id   Int?
+  level     Int?
+  sublevel  Int?
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  cpm      Int?
-  wpm      Int?
-  accuracy Int?
-  users    users?    @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "results_ibfk_1")
+  cpm       Int?
+  wpm       Int?
+  accuracy  Int?
+  users     users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "results_ibfk_1")
 
   @@index([user_id], map: "user_id")
-  @@ignore
 }
 
 model users {
-  id       Int       @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  login    String?   @db.VarChar(255)
-  email    String?   @unique(map: "email") @db.VarChar(255)
-  password String?   @db.VarChar(256)
-  results  results[] @ignore
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  login     String?   @db.VarChar(255)
+  email     String?   @unique(map: "email") @db.VarChar(255)
+  password  String?   @db.VarChar(256)
+  results   results[] @ignore
 }
