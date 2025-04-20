@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./node_modules/.prisma/client"
 }
 
 datasource db {
@@ -31,11 +32,29 @@ model results {
 }
 
 model users {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  login     String?   @db.VarChar(255)
-  email     String?   @unique(map: "email") @db.VarChar(255)
-  password  String?   @db.VarChar(256)
-  results   results[] @ignore
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
+  login      String?      @db.VarChar(255)
+  email      String?      @unique(map: "email") @db.VarChar(255)
+  password   String?      @db.VarChar(256)
+  results    results[]
+  user_roles user_roles?
+}
+
+model roles {
+  id         Int          @id @default(autoincrement())
+  role       String       @db.VarChar(255)
+  user_roles user_roles[]
+}
+
+model user_roles {
+  id      Int   @id @default(autoincrement())
+  user_id Int   
+  role_id Int   
+  user    users @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_roles_ibfk_1")
+  role    roles @relation(fields: [role_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_roles_ibfk_2")
+
+  @@index([role_id], map: "role_id")
+  @@unique([user_id])
 }
