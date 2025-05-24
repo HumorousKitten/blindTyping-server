@@ -49,12 +49,12 @@ export const registerUser = asyncHandler(async (req, res) => {
 	})	
 		
 	const role_id = await findRoleId(role)
-	
+
 	await prisma.user_roles.create({
 		data: {user_id: user.id, role_id: role_id.id}
 	})
 
 	const token = generateToken(user.id)
-	
+
 	res.json(token)
 })

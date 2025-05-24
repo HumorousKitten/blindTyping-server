@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./node_modules/.prisma/client"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -8,53 +8,183 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model levels {
-  level    Int
-  sublevel Int
-  str      String? @db.VarChar(512)
-
-  @@id([level, sublevel])
-}
-
-model results {
-  id        Int      @id @default(autoincrement())
-  user_id   Int?
-  level     Int?
-  sublevel  Int?
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  cpm       Int?
-  wpm       Int?
-  accuracy  Int?
-  users     users?   @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "results_ibfk_1")
-
-  @@index([user_id], map: "user_id")
-}
-
 model users {
-  id         Int          @id @default(autoincrement())
-  createdAt  DateTime     @default(now()) @map("created_at")
-  updatedAt  DateTime     @updatedAt @map("updated_at")
-  login      String?      @db.VarChar(255)
-  email      String?      @unique(map: "email") @db.VarChar(255)
-  password   String?      @db.VarChar(256)
-  results    results[]
+  id        Int      @id @default(autoincrement())
+  login     String?  @db.VarChar(255)
+  email     String?  @unique(map: "email") @db.VarChar(255)
+  password  String?  @db.VarChar(256)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
   user_roles user_roles?
+  Course     courses[]
+  user       user_courses[]
 }
 
 model roles {
-  id         Int          @id @default(autoincrement())
-  role       String       @db.VarChar(255)
+  id   Int    @id @default(autoincrement())
+  role String @db.VarChar(255)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
   user_roles user_roles[]
 }
 
 model user_roles {
-  id      Int   @id @default(autoincrement())
-  user_id Int   
-  role_id Int   
-  user    users @relation(fields: [user_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_roles_ibfk_1")
-  role    roles @relation(fields: [role_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_roles_ibfk_2")
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  role_id   Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  @@index([role_id], map: "role_id")
+  user users @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "user_roles_ifbk_1")
+  role roles @relation(fields: [role_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "user_roles_ifbk_2")
+
   @@unique([user_id])
+  @@index([role_id])
+}
+
+model courses {
+  id           Int             @id @default(autoincrement())
+  authorId     Int
+  title        String          @db.VarChar(256)
+  shortDesc    String?         @db.Text
+  previewImage String?         @db.VarChar(512)
+  avgDuration  Int
+  price        Decimal         @db.Decimal(10, 2)
+  slug         String          @unique
+  favorite     Boolean
+  fromWhom     fromWhomCourse?
+  createdAt    DateTime        @default(now()) @map("created_at")
+  updatedAt    DateTime        @default(now()) @updatedAt @map("updated_at")
+
+  author       users                 @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "course_ifbk_1")
+  details      course_detail?
+  stats        course_stat?
+  levelBlocks  course_level_blocks[]
+  reviewStatus course_review_queue?
+  course       user_courses[]
+
+  @@index([authorId])
+}
+
+enum fromWhomCourse {
+  admin
+  user
+}
+
+model course_review_queue {
+  id        Int          @id @default(autoincrement())
+  course_id Int
+  status    courseStatus
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @default(now()) @updatedAt @map("updated_at")
+
+  reviewStatus courses @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "course_review_queue_ifbk_1")
+
+  @@unique([course_id])
+}
+
+enum courseStatus {
+  pending
+  approved
+  rejected
+}
+
+model course_detail {
+  id            Int     @id @default(autoincrement())
+  course_id     Int
+  will_learn    String? @db.LongText
+  about_course  String? @db.LongText
+  for_whom      String? @db.LongText
+  preview_image String? @db.VarChar(2048)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  courseInfo courses @relation(fields: [course_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "courseDetail_ifbk_1")
+
+  @@unique([course_id])
+}
+
+model course_stat {
+  course_id        Int     @id
+  ratingAvg        Decimal @default(0.00) @db.Decimal(3, 2)
+  enrollmentsCount Int     @default(0)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  courseStat courses @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "courseStat_ifbk_1")
+
+  @@unique([course_id])
+}
+
+model user_courses {
+  id        Int @id @default(autoincrement())
+  user_id   Int
+  course_id Int
+
+  user   users   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "user_courses_ifbk_1")
+  course courses @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "user_courses_ifbk_2")
+
+  @@unique([user_id, course_id])
+}
+
+model course_level_blocks {
+  id        Int      @id @default(autoincrement())
+  course_id Int
+  title     String   @db.VarChar(256)
+  order     Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  levelBlocks courses @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "levelBlocks_ifbk_1")
+
+  courseLevels course_levels[]
+}
+
+enum levelType {
+  lecture
+  practice
+}
+
+model course_levels {
+  id             Int       @id @default(autoincrement())
+  level_block_id Int
+  title          String    @db.VarChar(256)
+  type           levelType
+  order          Int
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  courseLevels course_level_blocks @relation(fields: [level_block_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "courseLevels_ifbk_1")
+
+  levelInfo       course_level_info?
+  courseSubLevels course_sublevels[]
+}
+
+model course_level_info {
+  id          Int      @id @default(autoincrement())
+  level_id    Int
+  description String?  @db.LongText
+  video_url   String?  @db.VarChar(2048)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+
+  levelInfo course_levels @relation(fields: [level_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "course_level_info_ifbk_1")
+
+  @@unique([level_id])
+}
+
+model course_sublevels {
+  id        Int      @id @default(autoincrement())
+  level_id  Int
+  content   String   @db.LongText
+  order     Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  courseSubLevels course_levels @relation(fields: [level_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "courseSubLevels_ifbk_1")
 }

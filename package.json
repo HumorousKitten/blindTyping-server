@@ -9,7 +9,16 @@
 		"start": "node server.js",
 		"seed": "node prisma/seed.js",
 		"results": "node prisma/testResults.js",
-		"roles": "node prisma/roles.js"
+		"roles": "node prisma/roles.js",
+		"addAdmin": "node prisma/addAdmin.js",
+		"addCourses": "node prisma/addCourses.js",
+		"addCourseStat": "node prisma/addCourseStat.js",
+		"addCourseLevelBlocks": "node prisma/addCourseLevelBlocks.js",
+		"addCourseLevels": "node prisma/addCourseLevels.js",
+		"addCourseSubLevels": "node prisma/addCourseSubLevels",
+		"seedReviewStatuses": "node prisma/seedReviewStatuses",
+		"seedCourseDetails": "node prisma/seedCourseDetails",
+		"addLevelInfo": "node prisma/courseLevelInfo"
 	},
 	"keywords": [
 		"server",
@@ -19,7 +28,10 @@
 	"author": "HumorousKitten",
 	"license": "ISC",
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.802.0",
+		"@aws-sdk/lib-storage": "^3.802.0",
 		"@prisma/client": "^6.6.0",
+		"aws-sdk": "^2.1692.0",
 		"colors": "^1.4.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.5.0",
@@ -27,6 +39,7 @@
 		"express-async-handler": "^1.2.0",
 		"helmet": "^8.1.0",
 		"jsonwebtoken": "^9.0.2",
+		"mime-types": "^3.0.1",
 		"nodemon": "^3.1.9"
 	},
 	"devDependencies": {

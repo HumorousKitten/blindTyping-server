@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler'
 import { prisma } from '../prisma.js'
 
 //@desc Get level
-//@route GET /levels/getLevel
+//@route GET /levels/getLevel?level&sublevel
 //@access Private
 
 export const getLevel = asyncHandler(async (req, res) => {

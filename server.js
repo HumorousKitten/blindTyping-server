@@ -5,17 +5,21 @@ import express from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import authRoutes from './app/auth/auth.routes.js'
-import userRoutes from './app/getUser/getUser.routes.js'
-import levelRoutes from './app/getLevel/getLevel.routes.js'
-import userLevelRoutes from './app/getUserLevels/getUserLevel.routes.js'
 import userBestResultRoutes from './app/bestResult/userBestResult.routes.js'
+import levelRoutes from './app/getLevel/getLevel.routes.js'
+import userRoutes from './app/getUser/getUser.routes.js'
+import userLevelRoutes from './app/getUserLevels/getUserLevel.routes.js'
+import { errorHandler, notFound } from './app/middleware/error.middleware.js'
 import updateResultRoutes from './app/updateResult/updateResult.routes.js'
 import updateUserRoleRoutes from './app/updateUserRole/updateUserRole.routes.js'
-import { errorHandler, notFound } from './app/middleware/error.middleware.js'
-	
+import coursesRoutes from './app/getCoursesInfo/getCourses.routes.js'
+import courseLevelRoutes from './app/levelsPage/getLevelsInfo/getCourseLevels.routes.js'
+import courseSubscribeRoutes from './app/subscribeCourse/subscribeCourse.routes.js'
+import courseTasksModule from './app/course_tasks/courseTasks.routes.js'
+import levelInfoRoutes from './app/levelInfo/levelInfo.routes.js'
+
 dotenv.config()
 const app = express()
-
 
 const main = async () => {
 	if (process.env.NODE_ENV === 'development') app.use(morgan('dev'))
@@ -24,17 +28,18 @@ const main = async () => {
 	app.use(cors())
 	app.use(helmet())
 
-	app.get('/', (req, res) => {
-		res.send('Hello World')
-	})
+	// app.get('/', (req, res) => {
+	// 	res.send('Hello World')
+	// })
 
 	app.use('/auth', authRoutes)
-	app.use('/user', userRoutes)
-	app.use('/levels', levelRoutes)
-	app.use('/userLevels', userLevelRoutes)
-	app.use('/userBestResult', userBestResultRoutes)
 	app.use('/', updateResultRoutes)
 	app.use('/users', updateUserRoleRoutes)
+	app.use('/courses', coursesRoutes)
+	app.use('/course_levels', courseLevelRoutes)
+	app.use('/course', courseSubscribeRoutes)
+	app.use('/course', courseTasksModule)
+	app.use('/course', levelInfoRoutes)
 	app.use(notFound)
 	app.use(errorHandler)
 
