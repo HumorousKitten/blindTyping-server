@@ -40,7 +40,6 @@ export const getCourseModules = asyncHandler(async (req, res) => {
 						select: {
 							id: true,
 							level_id: true,
-							content: true,
 							order: true
 						}
 					}

@@ -40,6 +40,7 @@ const main = async () => {
 	app.use('/course', courseSubscribeRoutes)
 	app.use('/course', courseTasksModule)
 	app.use('/course', levelInfoRoutes)
+	app.use('/course-content', courseTasksModule)
 	app.use(notFound)
 	app.use(errorHandler)
 
