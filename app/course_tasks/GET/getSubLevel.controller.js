@@ -2,20 +2,21 @@ import asyncHandler from 'express-async-handler'
 import { prisma } from '../../prisma.js'
 
 //@desc Get sublevel
-//@route GET /course-content/sublevel?id
+//@route GET /course-content/sublevel?levelId&order
 //@access Private
 
 export const getSubLevel = asyncHandler( async (req, res) => {
-	const {id} = req.query
+	const {level_id, order} = req.query
 	
-	if(!id) {
+	if(!level_id || !order) {
 		res.status(404)
-		throw new Error('Не существует такого id')
+		throw new Error('Нет существующего под уровня')
 	}
 
-	const content = await prisma.course_sublevels.findUnique({
+	const content = await prisma.course_sublevels.findFirst({
 		where: {
-			id: +id
+			level_id: +level_id,
+			order: +order
 		},
 
 		select: {

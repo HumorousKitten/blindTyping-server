@@ -36,6 +36,12 @@ export const getCourseModules = asyncHandler(async (req, res) => {
 					title: true,
 					type: true,
 					order: true,
+					level_language: {
+						select: {
+							language: true
+						}
+					},
+
 					courseSubLevels: {
 						select: {
 							id: true,

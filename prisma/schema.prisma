@@ -156,10 +156,13 @@ model course_levels {
   title          String    @db.VarChar(256)
   type           levelType
   order          Int
+  lang_id        Int
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
 
   courseLevels course_level_blocks @relation(fields: [level_block_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "courseLevels_ifbk_1")
+
+  level_language languages @relation(fields: [lang_id], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "courseLevels_ifbk_2")
 
   levelInfo       course_level_info?
   courseSubLevels course_sublevels[]
@@ -187,4 +190,18 @@ model course_sublevels {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   courseSubLevels course_levels @relation(fields: [level_id], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "courseSubLevels_ifbk_1")
+}
+
+model languages {
+  id        Int      @id @default(autoincrement())
+  language  lang
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  levels course_levels[]
+}
+
+enum lang {
+  russian
+  english
 }

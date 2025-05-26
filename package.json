@@ -18,7 +18,8 @@
 		"addCourseSubLevels": "node prisma/addCourseSubLevels",
 		"seedReviewStatuses": "node prisma/seedReviewStatuses",
 		"seedCourseDetails": "node prisma/seedCourseDetails",
-		"addLevelInfo": "node prisma/courseLevelInfo"
+		"addLevelInfo": "node prisma/courseLevelInfo",
+		"seedLang": "node prisma/seedLanguages"
 	},
 	"keywords": [
 		"server",
