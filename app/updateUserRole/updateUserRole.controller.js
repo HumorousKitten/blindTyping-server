@@ -5,7 +5,6 @@ import { prisma } from '../prisma.js'
 // @route POST /users/update-role
 // @access Private/Admin
 
-//исправить регистрацию, чтобы данные отправлялись еще в таблицу user_roles, добавить еще одно поле role, в котором будет либо student, либо teacher
 
 const roles = {
 	student: 'student',
