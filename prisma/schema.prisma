@@ -51,11 +51,11 @@ model courses {
   title        String          @db.VarChar(256)
   shortDesc    String?         @db.Text
   previewImage String?         @db.VarChar(512)
-  avgDuration  Int
-  price        Decimal         @db.Decimal(10, 2)
-  slug         String          @unique
+  avgDuration  Int?
+  price        Decimal?         @db.Decimal(10, 2)
+  slug         String?          @unique
   favorite     Boolean
-  fromWhom     fromWhomCourse?
+  fromWhom     fromWhomCourse
   createdAt    DateTime        @default(now()) @map("created_at")
   updatedAt    DateTime        @default(now()) @updatedAt @map("updated_at")
 

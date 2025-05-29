@@ -19,7 +19,7 @@ import courseSubscribeRoutes from './app/subscribeCourse/subscribeCourse.routes.
 import courseTasksModule from './app/course_tasks/courseTasks.routes.js'
 import levelInfoRoutes from './app/levelInfo/levelInfo.routes.js'
 import roleRoutes from './app/getUserRole/getUserRole.routes.js'
-
+import createCourseRoute from './app/createCourse/createCourse.routes.js'
 
 dotenv.config()
 const app = express()
@@ -49,6 +49,7 @@ const main = async () => {
 	app.use('/course', levelInfoRoutes)
 	app.use('/course-content', courseTasksModule)
 	app.use('/me', roleRoutes)
+	app.use('/course', createCourseRoute)
 	app.use(notFound)
 	app.use(errorHandler)
 
